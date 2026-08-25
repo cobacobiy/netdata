@@ -3,7 +3,7 @@ services:
     image: netdata/netdata:${NETDATA_VERSION:-latest}
     container_name: netdata
     restart: unless-stopped
-    hostname: 55gemini2
+    hostname: arm64
     cap_add:
       - SYS_PTRACE
     security_opt:

@@ -1,0 +1,29 @@
+services:
+  netdata:
+    image: netdata/netdata:${NETDATA_VERSION:-latest}
+    container_name: netdata
+    restart: unless-stopped
+    hostname: 55gemini2
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - apparmor=unconfined
+    mem_limit: ${NETDATA_MEM_LIMIT:-256m}
+    ports:
+      - "${NETDATA_PORT:-19999}:19999"
+    volumes:
+      - ./config:/etc/netdata
+      - ./lib:/var/lib/netdata
+      - ./cache:/var/cache/netdata
+      - /etc/passwd:/host/etc/passwd:ro
+      - /etc/group:/host/etc/group:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /etc/os-release:/host/etc/os-release:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
